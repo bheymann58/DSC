@@ -1,0 +1,46 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vmName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the existing VM to onboard into Azure Automation DSC"
+            }
+        },
+        "registrationKey": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Registration key to use to onboard to the Azure Automation DSC pull/reporting server"
+            }
+        },
+        "registrationUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "Registration url of the Azure Automation DSC pull/reporting server"
+            }
+        }
+    },
+    "variables": {
+
+    },
+    "resources": [
+    {
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "name": "[concat(parameters('vmName'),'/MicrosoftAADSC')]",
+        "apiVersion": "2015-06-15",
+        "location": "[resourceGroup().location]",
+        "properties": {
+            "publisher": "Microsoft.OSTCExtensions",
+            "type": "DSCForLinux",
+            "typeHandlerVersion": "2.2",
+            "protectedSettings": {
+                "RegistrationUrl": "[parameters('registrationUrl')]",
+                "RegistrationKey": "[parameters('registrationKey')]"
+            },
+            "settings": {
+                "Mode": "Register"
+            }
+        }
+    }]
+}
