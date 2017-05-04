@@ -13,20 +13,17 @@
     )
 
 
-    #region setup
-#Add-AzureRmAccount
-#$AAAccountName = "$AutomationAccountName"
-#$AAAcct = Get-AzureRmAutomationAccount -Name $AAAccountName -ResourceGroupName $AAResourceGroup
-#$Keys = $AAAcct | Get-AzureRmAutomationRegistrationInfo
-#endregion
+#region setup
 
-    $Conn = Get-AutomationConnection -Name AzureRunAsConnection
-    Add-AzureRMAccount -ServicePrincipal -Tenant $Conn.TenantID -ApplicationId $Conn.ApplicationID -CertificateThumbprint $Conn.CertificateThumbprint
-    Select-AzureRmSubscription -SubscriptionId $Conn.SubscriptionID
+$Conn = Get-AutomationConnection -Name AzureRunAsConnection
+Add-AzureRMAccount -ServicePrincipal -Tenant $Conn.TenantID -ApplicationId $Conn.ApplicationID -CertificateThumbprint $Conn.CertificateThumbprint
+Select-AzureRmSubscription -SubscriptionId $Conn.SubscriptionID
 
 $AAAccountName = "$AutomationAccountName"
 $AAAcct = Get-AzureRmAutomationAccount -Name $AAAccountName -ResourceGroupName $AAResourceGroup
 $Keys = $AAAcct | Get-AzureRmAutomationRegistrationInfo
+
+#endregion
 
     if ($DryRun -eq $true)
     {
@@ -82,7 +79,7 @@ $Keys = $AAAcct | Get-AzureRmAutomationRegistrationInfo
                                     }
                                 }
 
-                                New-AzureRmResourceGroupDeployment @WindowsTemplateOnbaord -Force
+                                New-AzureRmResourceGroupDeployment @WindowsTemplateOnbaord -WarningAction SilentlyContinue -Verbose
                             }
 
                             $DSCNewInstallCount++
@@ -111,7 +108,7 @@ $Keys = $AAAcct | Get-AzureRmAutomationRegistrationInfo
                                         vmName = $VM.Name
                                     }
 
-                                    New-AzureRmResourceGroupDeployment @LinuxTemplateOnboard
+                                    New-AzureRmResourceGroupDeployment @LinuxTemplateOnboard -WarningAction SilentlyContinue -Verbose
                                 }
                             }
                             

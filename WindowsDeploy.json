@@ -10,7 +10,7 @@
         },
         "modulesUrl": {
             "type": "string",
-            "defaultValue": "https://github.com/Azure/azure-quickstart-templates/raw/master/dsc-extension-azure-automation-pullserver/UpdateLCMforAAPull.zip",
+            "defaultValue": "https://github.com/bheymann58/DSC/blob/master/UpdateLCMforAAPull.zip",
             "metadata": {
                 "description": "URL for the DSC configuration package. NOTE: Can be a Github url(raw) to the zip file (this is the default value)"
             }
