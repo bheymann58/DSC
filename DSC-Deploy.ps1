@@ -14,10 +14,11 @@ $Location = 'East US'
 
 #region ARM Template running Windows VM
 $Node4 = $RG | Get-AzureRmVM -Name VKellyWIN002
-$TemplateFile = '$WorkingDir\Windows_DSC.json'
+$TemplateURI = 'https://raw.githubusercontent.com/bheymann58/DSC/master/WindowsDeploy.json'
+Start-Process microsoft-edge:$TemplateURI
 
 $RGDeployArgs1 = @{
-    TemplateFile = "$WorkingDir\Windows_DSC.json"
+    TemplateURI = 'https://raw.githubusercontent.com/bheymann58/DSC/master/WindowsDeploy.json'
     Mode = 'Incremental'
     ResourceGroupName = $RG.ResourceGroupName
     TemplateParameterObject = @{
@@ -33,8 +34,9 @@ New-AzureRmResourceGroupDeployment @RGDeployArgs1 -Force
 #endregion
 
 #region ARM Template running Linux VM
-psEdit "$WorkingDir\Linux_DSC.json"
 $Node5 = $RG | Get-AzureRmVM -Name HeymannLinuxUBTest02
+$TemplateURI = 'https://raw.githubusercontent.com/bheymann58/DSC/master/LinuxDeploy.json'
+Start-Process microsoft-edge:$TemplateURI
 
 $LinuxTemplateOnboard = @{
     ResourceGroupName = $RG.ResourceGroupName
@@ -43,7 +45,7 @@ $LinuxTemplateOnboard = @{
         registrationKey = $Keys.PrimaryKey
         registrationUrl = $Keys.Endpoint
     }
-    TemplateFile = "$WorkingDir\Linux_DSC.json"
+    TemplateUri = 'https://raw.githubusercontent.com/bheymann58/DSC/master/LinuxDeploy.json'
     vmName = $Node5.Name
 }
 

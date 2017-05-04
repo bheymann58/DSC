@@ -19,6 +19,32 @@
             "metadata": {
                 "description": "Registration url of the Azure Automation DSC pull/reporting server"
             }
+        },
+	"nodeConfigurationName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the node configuration, on the Azure Automation DSC pull server, that this node will be configured as"
+            }
+        },
+	"mode": {
+            "type": "string",
+            "defaultValue": "Register",
+            "metadata": {
+                "description": "The functional mode, push MOF configuration (Push), distribute MOF configuration (Pull), install custom DSC module (Install)"
+            },
+            "allowedValues": [
+                "Push",
+                "Pull",
+                "Install",
+                "Register"
+            ]
+        },
+	"fileUri": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "The uri of the MOF file/Meta MOF file/resource ZIP file"
+            }
         }
     },
     "variables": {
@@ -34,12 +60,13 @@
             "publisher": "Microsoft.OSTCExtensions",
             "type": "DSCForLinux",
             "typeHandlerVersion": "2.2",
-            "protectedSettings": {
+	    "protectedSettings": {
                 "RegistrationUrl": "[parameters('registrationUrl')]",
                 "RegistrationKey": "[parameters('registrationKey')]"
             },
             "settings": {
-                "Mode": "Register"
+                "Mode": "[parameters('mode')]",
+		"FileUri": "[parameters('fileUri')]"
             }
         }
     }]
